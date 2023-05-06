@@ -25,20 +25,7 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(800, 600)
-        MainWindow.setStyleSheet(u"/*\n"
-"QFrame {\n"
-"border: 1px solid #ccc;\n"
-"}*/\n"
-"/* global */\n"
-"/*\n"
-"#centralwidget {\n"
-"	\n"
-"	border: 1px solid #ccc;\n"
-"	border-radius: 10px;\n"
-"	\n"
-"}\n"
-"*/\n"
-"/* main*/\n"
+        MainWindow.setStyleSheet(u"/* main*/\n"
 "#main_app {\n"
 "	background-color: rgb(239, 239, 239);\n"
 "	border: 1px solid #ccc ;\n"
@@ -71,8 +58,7 @@ class Ui_MainWindow(object):
 "	border-radius: 9px;\n"
 "}\n"
 "\n"
-"/"
-                        "*footer */\n"
+"/*footer */\n"
 "#app_message {\n"
 "	background-color: rgb(40, 40, 40);\n"
 "    color: #74cf62;\n"
@@ -84,7 +70,7 @@ class Ui_MainWindow(object):
         self.verticalLayout = QVBoxLayout(self.centralwidget)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(9, 9, 9, 9)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.main_app = QWidget(self.centralwidget)
         self.main_app.setObjectName(u"main_app")
         self.verticalLayout_2 = QVBoxLayout(self.main_app)
@@ -110,10 +96,18 @@ class Ui_MainWindow(object):
 
         self.header_layouts.addWidget(self.app_icon, 0, Qt.AlignVCenter)
 
-        self.app_menu = QHBoxLayout()
-        self.app_menu.setObjectName(u"app_menu")
+        self.app_menu_frame = QFrame(self.header_frame)
+        self.app_menu_frame.setObjectName(u"app_menu_frame")
+        self.app_menu_frame.setMinimumSize(QSize(228, 20))
+        self.app_menu_frame.setMaximumSize(QSize(228, 16777215))
+        self.app_menu_frame.setFrameShape(QFrame.StyledPanel)
+        self.app_menu_frame.setFrameShadow(QFrame.Raised)
+        self.app_menu_layouts = QHBoxLayout(self.app_menu_frame)
+        self.app_menu_layouts.setSpacing(0)
+        self.app_menu_layouts.setObjectName(u"app_menu_layouts")
+        self.app_menu_layouts.setContentsMargins(0, 0, 0, 0)
 
-        self.header_layouts.addLayout(self.app_menu)
+        self.header_layouts.addWidget(self.app_menu_frame, 0, Qt.AlignVCenter)
 
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -172,20 +166,20 @@ class Ui_MainWindow(object):
         self.content_search_bottom.setSpacing(8)
         self.content_search_bottom.setObjectName(u"content_search_bottom")
         self.content_search_bottom.setContentsMargins(6, -1, 6, -1)
-        self.search_label = QLabel(self.content_title_left)
-        self.search_label.setObjectName(u"search_label")
+        self.search_story_label = QLabel(self.content_title_left)
+        self.search_story_label.setObjectName(u"search_story_label")
 
-        self.content_search_bottom.addWidget(self.search_label)
+        self.content_search_bottom.addWidget(self.search_story_label)
 
-        self.search_input = QLineEdit(self.content_title_left)
-        self.search_input.setObjectName(u"search_input")
+        self.search_story_input = QLineEdit(self.content_title_left)
+        self.search_story_input.setObjectName(u"search_story_input")
 
-        self.content_search_bottom.addWidget(self.search_input)
+        self.content_search_bottom.addWidget(self.search_story_input)
 
-        self.search_push = QPushButton(self.content_title_left)
-        self.search_push.setObjectName(u"search_push")
+        self.search_story_push = QPushButton(self.content_title_left)
+        self.search_story_push.setObjectName(u"search_story_push")
 
-        self.content_search_bottom.addWidget(self.search_push)
+        self.content_search_bottom.addWidget(self.search_story_push)
 
 
         self.verticalLayout_3.addLayout(self.content_search_bottom)
@@ -197,20 +191,20 @@ class Ui_MainWindow(object):
 
         self.content_search_top.addItem(self.horizontalSpacer_4)
 
-        self.app_prev = QPushButton(self.content_title_left)
-        self.app_prev.setObjectName(u"app_prev")
+        self.search_prev_chapter = QPushButton(self.content_title_left)
+        self.search_prev_chapter.setObjectName(u"search_prev_chapter")
 
-        self.content_search_top.addWidget(self.app_prev, 0, Qt.AlignVCenter)
+        self.content_search_top.addWidget(self.search_prev_chapter, 0, Qt.AlignVCenter)
 
-        self.app_next = QPushButton(self.content_title_left)
-        self.app_next.setObjectName(u"app_next")
+        self.search_next_chapter = QPushButton(self.content_title_left)
+        self.search_next_chapter.setObjectName(u"search_next_chapter")
 
-        self.content_search_top.addWidget(self.app_next, 0, Qt.AlignVCenter)
+        self.content_search_top.addWidget(self.search_next_chapter, 0, Qt.AlignVCenter)
 
-        self.app_paste = QPushButton(self.content_title_left)
-        self.app_paste.setObjectName(u"app_paste")
+        self.search_paste_story = QPushButton(self.content_title_left)
+        self.search_paste_story.setObjectName(u"search_paste_story")
 
-        self.content_search_top.addWidget(self.app_paste, 0, Qt.AlignVCenter)
+        self.content_search_top.addWidget(self.search_paste_story, 0, Qt.AlignVCenter)
 
         self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -243,7 +237,6 @@ class Ui_MainWindow(object):
         self.translate_options.addItem("")
         self.translate_options.addItem("")
         self.translate_options.addItem("")
-        self.translate_options.addItem("")
         self.translate_options.setObjectName(u"translate_options")
         self.translate_options.setMaximumSize(QSize(115, 16777215))
 
@@ -258,10 +251,10 @@ class Ui_MainWindow(object):
 
         self.content_options_top.addItem(self.horizontalSpacer_3)
 
-        self.checkBox = QCheckBox(self.content_title_right)
-        self.checkBox.setObjectName(u"checkBox")
+        self.app_hightLight = QCheckBox(self.content_title_right)
+        self.app_hightLight.setObjectName(u"app_hightLight")
 
-        self.content_options_top.addWidget(self.checkBox, 0, Qt.AlignRight)
+        self.content_options_top.addWidget(self.app_hightLight, 0, Qt.AlignRight)
 
         self.app_scroll = QCheckBox(self.content_title_right)
         self.app_scroll.setObjectName(u"app_scroll")
@@ -347,21 +340,20 @@ class Ui_MainWindow(object):
         self.app_minimize.setText("")
         self.app_maximize.setText("")
         self.app_close.setText("")
-        self.search_label.setText(QCoreApplication.translate("MainWindow", u"URL", None))
-        self.search_push.setText(QCoreApplication.translate("MainWindow", u"Search", None))
-        self.app_prev.setText(QCoreApplication.translate("MainWindow", u"Prev", None))
-        self.app_next.setText(QCoreApplication.translate("MainWindow", u"Next", None))
-        self.app_paste.setText(QCoreApplication.translate("MainWindow", u"Paste from Clipboard", None))
+        self.search_story_label.setText(QCoreApplication.translate("MainWindow", u"URL", None))
+        self.search_story_push.setText(QCoreApplication.translate("MainWindow", u"Search", None))
+        self.search_prev_chapter.setText(QCoreApplication.translate("MainWindow", u"Prev", None))
+        self.search_next_chapter.setText(QCoreApplication.translate("MainWindow", u"Next", None))
+        self.search_paste_story.setText(QCoreApplication.translate("MainWindow", u"Paste from Clipboard", None))
         self.translate_options.setItemText(0, QCoreApplication.translate("MainWindow", u"Translate All", None))
-        self.translate_options.setItemText(1, QCoreApplication.translate("MainWindow", u"Translate CN", None))
-        self.translate_options.setItemText(2, QCoreApplication.translate("MainWindow", u"Translate VI", None))
-        self.translate_options.setItemText(3, QCoreApplication.translate("MainWindow", u"Translate EN", None))
+        self.translate_options.setItemText(1, QCoreApplication.translate("MainWindow", u"Translate VI", None))
+        self.translate_options.setItemText(2, QCoreApplication.translate("MainWindow", u"Translate EN", None))
+        self.translate_options.setItemText(3, QCoreApplication.translate("MainWindow", u"Translate EN-VI", None))
         self.translate_options.setItemText(4, QCoreApplication.translate("MainWindow", u"Translate VietPhrase", None))
         self.translate_options.setItemText(5, QCoreApplication.translate("MainWindow", u"Translate Han Viet", None))
-        self.translate_options.setItemText(6, "")
 
         self.translate_push.setText(QCoreApplication.translate("MainWindow", u"Translate", None))
-        self.checkBox.setText(QCoreApplication.translate("MainWindow", u"HightLight", None))
+        self.app_hightLight.setText(QCoreApplication.translate("MainWindow", u"HightLight", None))
         self.app_scroll.setText(QCoreApplication.translate("MainWindow", u"Scorll", None))
         self.app_state_message.setText(QCoreApplication.translate("MainWindow", u"Message", None))
     # retranslateUi

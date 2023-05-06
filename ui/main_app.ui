@@ -14,20 +14,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">/*
-QFrame {
-border: 1px solid #ccc;
-}*/
-/* global */
-/*
-#centralwidget {
-	
-	border: 1px solid #ccc;
-	border-radius: 10px;
-	
-}
-*/
-/* main*/
+   <string notr="true">/* main*/
 #main_app {
 	background-color: rgb(239, 239, 239);
 	border: 1px solid #ccc ;
@@ -74,16 +61,16 @@ border: 1px solid #ccc;
      <number>0</number>
     </property>
     <property name="leftMargin">
-     <number>9</number>
+     <number>0</number>
     </property>
     <property name="topMargin">
-     <number>9</number>
+     <number>0</number>
     </property>
     <property name="rightMargin">
-     <number>9</number>
+     <number>0</number>
     </property>
     <property name="bottomMargin">
-     <number>9</number>
+     <number>0</number>
     </property>
     <item>
      <widget class="QWidget" name="main_app" native="true">
@@ -164,8 +151,44 @@ border: 1px solid #ccc;
             </property>
            </widget>
           </item>
-          <item>
-           <layout class="QHBoxLayout" name="app_menu"/>
+          <item alignment="Qt::AlignVCenter">
+           <widget class="QFrame" name="app_menu_frame">
+            <property name="minimumSize">
+             <size>
+              <width>228</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>228</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QHBoxLayout" name="app_menu_layouts">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+            </layout>
+           </widget>
           </item>
           <item>
            <spacer name="horizontalSpacer">
@@ -330,17 +353,17 @@ border: 1px solid #ccc;
                    <number>6</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="search_label">
+                   <widget class="QLabel" name="search_story_label">
                     <property name="text">
                      <string>URL</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QLineEdit" name="search_input"/>
+                   <widget class="QLineEdit" name="search_story_input"/>
                   </item>
                   <item>
-                   <widget class="QPushButton" name="search_push">
+                   <widget class="QPushButton" name="search_story_push">
                     <property name="text">
                      <string>Search</string>
                     </property>
@@ -367,21 +390,21 @@ border: 1px solid #ccc;
                    </spacer>
                   </item>
                   <item alignment="Qt::AlignVCenter">
-                   <widget class="QPushButton" name="app_prev">
+                   <widget class="QPushButton" name="search_prev_chapter">
                     <property name="text">
                      <string>Prev</string>
                     </property>
                    </widget>
                   </item>
                   <item alignment="Qt::AlignVCenter">
-                   <widget class="QPushButton" name="app_next">
+                   <widget class="QPushButton" name="search_next_chapter">
                     <property name="text">
                      <string>Next</string>
                     </property>
                    </widget>
                   </item>
                   <item alignment="Qt::AlignVCenter">
-                   <widget class="QPushButton" name="app_paste">
+                   <widget class="QPushButton" name="search_paste_story">
                     <property name="text">
                      <string>Paste from Clipboard</string>
                     </property>
@@ -455,11 +478,6 @@ border: 1px solid #ccc;
                     </item>
                     <item>
                      <property name="text">
-                      <string>Translate CN</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
                       <string>Translate VI</string>
                      </property>
                     </item>
@@ -470,17 +488,17 @@ border: 1px solid #ccc;
                     </item>
                     <item>
                      <property name="text">
+                      <string>Translate EN-VI</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
                       <string>Translate VietPhrase</string>
                      </property>
                     </item>
                     <item>
                      <property name="text">
                       <string>Translate Han Viet</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string/>
                      </property>
                     </item>
                    </widget>
@@ -506,7 +524,7 @@ border: 1px solid #ccc;
                    </spacer>
                   </item>
                   <item alignment="Qt::AlignRight">
-                   <widget class="QCheckBox" name="checkBox">
+                   <widget class="QCheckBox" name="app_hightLight">
                     <property name="text">
                      <string>HightLight</string>
                     </property>
