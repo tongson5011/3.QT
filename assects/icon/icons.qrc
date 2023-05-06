@@ -1,0 +1,11 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>icons8-search-32.png</file>
+    <file>icons8-search-64.png</file>
+    <file>close.png</file>
+    <file>close-cicle.png</file>
+    <file>compress.png</file>
+    <file>maximize.png</file>
+    <file>minimize.png</file>
+  </qresource>
+</RCC>
