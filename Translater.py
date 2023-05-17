@@ -7,7 +7,9 @@ import time
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s : %(message)s')
 
-API_KEY = '2b553ac62ccf404ca9b725e6710ee9f8'
+API_KEY = '31762f673f1047f688f8465b6117a468'
+# API_KEY = '31762f673f1047f688f8465b6117a468'   # key chinh thuc
+
 SERVICE_REGOIN = 'southeastasia'
 SERVICE_ENPOINT = 'https://api.cognitive.microsofttranslator.com/translate?api-version=3.0'
 

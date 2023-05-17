@@ -1,11 +1,6 @@
-from PyQt5.QtWidgets import QApplication
-from pyqt_shadow_frame_window_example import MainWindow, ShadowFrame
+import pynlpir
+pynlpir.open()
+mystring = "你汉语说的很好！"
+tokenized_string = pynlpir.segment(mystring, pos_tagging=False)
 
-if __name__ == "__main__":
-    import sys
-
-    app = QApplication(sys.argv)
-    widget = MainWindow()
-    window = ShadowFrame(widget)
-    window.show()
-    app.exec()
+print(tokenized_string)

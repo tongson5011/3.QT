@@ -17,9 +17,13 @@ import time
 from crawl_story import Story, validateURL
 from Translater import Translate
 from charaters import charaters_name
+from splitChinaText import find_dict
+from datetime import datetime
 
 # config os path
 PATH = os.path.dirname(os.path.abspath(__file__))
+userData = os.path.join(PATH, 'userData')
+userData_temp = os.path.join(userData, 'temp')
 maximize_app = os.path.join(PATH, 'maximize_app.css')
 normalize_app = os.path.join(PATH, 'normalize_app.css')
 app_logo = os.path.join(PATH, 'assects\icon\logo.png')
@@ -87,6 +91,9 @@ class MainWindow(FramelessMainWindow, Ui_MainWindow):
         self.menu_ui.save_action.triggered.connect(self.handleSaveApp)
         # menu save as
         self.menu_ui.save_as_action.triggered.connect(self.handleSaveAsApp)
+        # menu export
+        self.menu_ui.export_All.triggered.connect(self.handleExportAll)
+        self.menu_ui.export_VI.triggered.connect(self.handleExportVI)
 
         # ==============================================
         # ==============================================
@@ -240,6 +247,9 @@ class MainWindow(FramelessMainWindow, Ui_MainWindow):
 
     # run crawl sotry
     def handleScrawlStory(self, chapter_url=''):
+        # save current data
+        self.handleSaveTempFile()
+        #
         self.search_story_push.setDisabled(True)
         if chapter_url:
             self.story_input = self.handleCheckStoryInput(
@@ -259,6 +269,7 @@ class MainWindow(FramelessMainWindow, Ui_MainWindow):
 
     # handle next, prev chapter
     def handleNextPrevChapter(self, chapter_data):
+        self.handleSaveTempFile()
         self.story_input = self.search_story_input.text()
         if not self.story_input:
             self.app_message.appendPlainText(
@@ -477,10 +488,30 @@ class MainWindow(FramelessMainWindow, Ui_MainWindow):
         # =============================================
         # ==================================================
 
+    def handleExportAll(self):
+        pass
+
+    def handleExportVI(self):
+        filename, _ = QFileDialog.getSaveFileName(
+            self, 'export File', '', 'Vi Text (*.txt)')
+        vi_data = self.edit_ui.edit_vi.toPlainText()
+        if filename:
+            with open(filename, 'w', encoding='utf-8') as f:
+                f.write(vi_data)
+
+    def handleSaveTempFile(self):
+        now = datetime.now()
+        dt_string = now.strftime("%d-%m-%Y-%H-%M-%S-%f")
+        file_temp = os.path.join(userData_temp, f'{dt_string}.st')
+        print(file_temp)
+        with open(file_temp, 'w', encoding='utf-8') as f:
+            json.dump(self.app_config, f)
+
     # ==================================================
     # =============== handle app config ================
     # ==================================================
     # hidden message
+
     def handleHidenMessage(self):
         if not self.app_state_message.isChecked():
             self.app_message.hide()
@@ -544,8 +575,17 @@ class MainWindow(FramelessMainWindow, Ui_MainWindow):
             line_number = cursor.blockNumber() or 0
             current_block = self.edit_ui.edit_cn.document().findBlockByLineNumber(line_number)
             china_text = current_block.text()
-            self.edit_ui.edit_Properties.clear()
-            self.edit_ui.edit_Properties.append(china_text)
+
+            # self.edit_ui.edit_Properties.clear()
+            find_dict_worker = Worker(
+                lambda: find_dict(default_text=china_text))
+            # find_dict_worker.signals.result.connect(
+            #     lambda result_data: self.edit_ui.edit_Properties.append(' '.join(result_data)))
+            find_dict_worker.signals.result.connect(
+                lambda result: self.handleAddChinaDict(china_text, result))
+            self.theadpool.start(find_dict_worker)
+            # print(result)
+            # self.edit_ui.edit_Properties.append()
             # hightlight VI
             self.handleHightLightCurrentText(
                 target=self.edit_ui.edit_vi, line_number=line_number, isScroll=False)
@@ -574,7 +614,18 @@ class MainWindow(FramelessMainWindow, Ui_MainWindow):
         # extra_selection.cursor.setPosition(
         #     end_l, QTextCursor.KeepAnchor)
         # self.edit_ui.edit_vi.setExtraSelections([extra_selection])
-
+    # add china dictionary
+    def handleAddChinaDict(self, china_text, list_datas):
+        result = ''''''
+        print(list_datas)
+        for data in list_datas:
+            if not result:
+                result = result + f'''{china_text} \n'''
+            key = data[0]
+            value = data[1]
+            result = result + f'''-{key}: {value} \n'''
+        self.edit_ui.edit_Properties.clear()
+        self.edit_ui.edit_Properties.append(result)
     # =============================================
     # =============================================
 
