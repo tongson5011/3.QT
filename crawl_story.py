@@ -80,10 +80,12 @@ class Story():
                 return {'status': 'Faild', 'message': f'{chapterHTML["message"]}'}
             logging.info('Staring extract data from HTML')
             chapter_html = HTML(html=chapterHTML['result'])
+
             chapter_title = chapter_html.find(self.find_title, first=True).text
             chapter_content = chapter_html.find(
                 self.find_content, first=True).text
             chapter_data = f'''{chapter_title} \n {chapter_content}'''
+
         except Exception as e:
             logging.error('Someting went wrong while extract data')
             return {'status': 'Faild', 'message': f'{e}'}
@@ -107,6 +109,7 @@ class Story():
             return {'status': 'Faild', 'message': f'{e}'}
         else:
             logging.info('Success load Next/Prev chapter')
+            print('next chapter:', next_chapter)
             return {
                 'status': 'Success',
                 'result': {
@@ -146,9 +149,9 @@ class Story():
 
 if __name__ == '__main__':
     story = Story(
-        url='https://read.qidian.com/chapter/wTF9n4Bk1pudL1xidHTgxA2/DvKFKYYhsMf6ItTi_ILQ7A2/')
+        url='https://www.qidian.com/chapter/1036506211/747924467/', find_title='.print>h1', find_content='.content')
 
-    result = story.prevChapter()
+    result = story.scrawlChapterDATA()
 
     print(result)
 # chapter_url='', find_title='', find_content='', find_next_chapter='', find_prev_chapter=''

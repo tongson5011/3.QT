@@ -260,9 +260,12 @@ class MainWindow(FramelessMainWindow, Ui_MainWindow):
             self.search_story_input.setText(self.story_input)
             self.app_message.appendPlainText(
                 'Stating crawl story data. please Wait a few minute')
-            self.m_story = Story(url=self.story_input)
+            self.m_story = Story(
+                url=self.story_input, find_title='.print>h1', find_content='.content')
             story_worker = Worker(self.m_story.scrawlChapterDATA)
             story_worker.signals.result.connect(self.handleLoadStoryData)
+            # story_worker.signals.result.connect(lambda data: print(data))
+
             self.theadpool.start(story_worker)
         else:
             self.search_story_push.setDisabled(False)
@@ -275,7 +278,8 @@ class MainWindow(FramelessMainWindow, Ui_MainWindow):
             self.app_message.appendPlainText(
                 'URL is emtry, please insert chapter url first')
         else:
-            self.m_story = Story(url=self.story_input)
+            self.m_story = Story(
+                url=self.story_input, find_title='.print>h1', find_content='.content')
             if chapter_data == 'prev_chapter':
                 prev_story_worker = Worker(self.m_story.prevChapter)
                 prev_story_worker.signals.result.connect(
@@ -575,7 +579,6 @@ class MainWindow(FramelessMainWindow, Ui_MainWindow):
             line_number = cursor.blockNumber() or 0
             current_block = self.edit_ui.edit_cn.document().findBlockByLineNumber(line_number)
             china_text = current_block.text()
-
             # self.edit_ui.edit_Properties.clear()
             find_dict_worker = Worker(
                 lambda: find_dict(default_text=china_text))
@@ -661,7 +664,6 @@ class MainWindow(FramelessMainWindow, Ui_MainWindow):
     # ==========Handle create new app =================+
     # ==================================================
     # open app in a new window
-
     def handleNewApp(self):
         new_app = QApplication.instance()
 

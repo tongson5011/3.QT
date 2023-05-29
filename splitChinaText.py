@@ -36,8 +36,8 @@ def find_dict(default_text =''):
             current_text = default_text[start:]
         else:
             if len(current_text) == 1:
-                if not current_text.isspace():
-                    result.append([current_text,''])
+                # if not current_text.isspace():
+                #     result.append([current_text,''])
                 start = start + 1
                 current_text = default_text[start:]
             else:
