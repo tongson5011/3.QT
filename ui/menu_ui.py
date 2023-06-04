@@ -52,12 +52,22 @@ class Menu_ui(QMainWindow):
         self.layout_action = QAction('Layout', self)
         # add toolbar action
         self.paste_action = QAction('Paste', self)
+        # add find action
+        self.find_action = QAction('Find', self)
+        # add replace action
+        self.replace_action = QAction('Replace', self)
+
         # create shortcut
         self.new_action.setShortcut('Ctrl+N')
         self.open_action.setShortcut('Ctrl+O')
+        #
+        self.find_action.setShortcut('Ctrl+F')
+        self.replace_action.setShortcut('Ctrl+H')
 
+        #
         self.save_action.setShortcut('Ctrl+S')
         self.save_as_action.setShortcut('Ctrl+Shift+S')
+        #
         self.export_All.setShortcut('Ctrl+Shift+A')
         self.export_VI.setShortcut('Ctrl+E')
         self.export_EN_VI.setShortcut('Ctrl+W')
@@ -73,7 +83,8 @@ class Menu_ui(QMainWindow):
             [self.new_action, self.open_action, file_menu.addSeparator(), self.save_action, self.save_as_action, file_menu.addSeparator(), file_menu.addMenu(export_menu), self.exit_action])
         export_menu.addActions(
             [self.export_All, self.export_VI, self.export_CN, self.export_EN, self.export_EN_VI, self.export_VietPhrase, self.export_Han_Viet])
-        edit_menu.addActions([self.edit_action])
+        edit_menu.addActions(
+            [self.edit_action, self.find_action, self.replace_action])
         view_menu.addActions([self.message_action])
         window_menu.addActions([self.layout_action])
         help_menu.addActions([self.about_action])

@@ -1,13 +1,15 @@
 # import PySide6
-from qframelesswindow import FramelessMainWindow
-from PySide6.QtWidgets import QMainWindow, QApplication, QFileDialog, QTextEdit
-from PySide6.QtCore import Qt, QThreadPool
-from PySide6.QtGui import QFont, QTextCharFormat, QTextCursor, QColor, QCursor
+from qframelesswindow import FramelessMainWindow, FramelessWindow
+from PySide6.QtWidgets import QWidget, QMainWindow, QApplication, QFileDialog, QTextEdit
+from PySide6.QtCore import Qt, QThreadPool, QRegularExpression
+from PySide6.QtGui import QFont, QTextCharFormat, QTextCursor, QColor, QCursor, QSyntaxHighlighter, QTextDocument, QBrush
 from load_config import Worker
 # import ui module
 from ui.menu_ui import Menu_ui
 from ui.Edit_ui import Edit_UI
 from ui.main_app_ui import Ui_MainWindow
+from ui.find_ui import Ui_Find
+from ui.replace_ui import Ui_Replace
 # import extenal module
 import json
 import os
@@ -32,6 +34,19 @@ with open(normalize_app, 'r') as f:
     app_style = f.read()
 
 
+class Find_Ui(FramelessWindow, Ui_Find):
+    def __init__(self):
+        super().__init__()
+        self.setWindowFlag(Qt.WindowStaysOnTopHint, True)
+        self.setupUi(self)
+
+
+class Replace_Ui(QWidget, Ui_Replace):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
+
 class MainWindow(FramelessMainWindow, Ui_MainWindow):
     app_windows = []
 
@@ -47,6 +62,8 @@ class MainWindow(FramelessMainWindow, Ui_MainWindow):
         # config widget
         self.menu_ui = Menu_ui()
         self.edit_ui = Edit_UI()
+        self.find_ui = Find_Ui()
+        self.replace_ui = Replace_Ui()
         self.m_story = Story()
         self.trans = Translate(charaters=charaters_name)
         self.theadpool = QThreadPool()
@@ -57,6 +74,8 @@ class MainWindow(FramelessMainWindow, Ui_MainWindow):
         self.app_config = None
         self.isTranslateAll = False
         self.story_input = None
+        self.is_find = False
+        self.findIndex = -1
         #
         self.maxScroll_VI = 0
         # ======================================
@@ -94,6 +113,9 @@ class MainWindow(FramelessMainWindow, Ui_MainWindow):
         # menu export
         self.menu_ui.export_All.triggered.connect(self.handleExportAll)
         self.menu_ui.export_VI.triggered.connect(self.handleExportVI)
+        # menu find and replace
+        self.menu_ui.find_action.triggered.connect(self.handleFindAction)
+        self.menu_ui.replace_action.triggered.connect(self.handleReplaceAction)
 
         # ==============================================
         # ==============================================
@@ -109,9 +131,41 @@ class MainWindow(FramelessMainWindow, Ui_MainWindow):
         self.translate_push.clicked.connect(self.handleTranslation)
 
     # ==============================================
+    # ===============Find Action====================
+    # ==============================================
+    def handleFindAction(self):
+        self.find_ui.show()
+        self.find_ui.find_input.textChanged.connect(self.find_text)
+
+    def handleReplaceAction(self):
+        self.replace_ui.show()
+        self.replace_ui.btn_replace_all.clicked.connect(self.replace_text)
+
+    def replace_text(self):
+        repleace_input = self.replace_ui.replace_input.text()
+        repleace_output = self.replace_ui.replace_output.text()
+        print(f'replace_text:{repleace_input} - {repleace_output}')
+        self.edit_ui.edit_vi.setPlainText(
+            self.edit_ui.edit_vi.toPlainText().replace(repleace_input, repleace_output))
+    # handle find action
+
+    def find_text(self, findText):
+        cursor = self.edit_ui.edit_vi.document().find(findText)
+        extra_selections = []
+        print('begin:', cursor.hasSelection())
+        while cursor.hasSelection():
+            print('current:', cursor.hasSelection())
+            selection = QTextEdit.ExtraSelection()
+            selection.format.setBackground(Qt.yellow)
+            selection.cursor = cursor
+            extra_selections.append(selection)
+            cursor = self.edit_ui.edit_vi.document().find(findText, cursor)
+        self.edit_ui.edit_vi.setExtraSelections(extra_selections)
+    # ==============================================
     # ===========Translate sections====================
     # ==============================================
     # Translate all
+
     def handleTranslation(self):
         translate_input = self.translate_options.currentText()
         translate_options = ['Translate All', 'Translate Han Viet',
@@ -314,7 +368,7 @@ class MainWindow(FramelessMainWindow, Ui_MainWindow):
         self.saveAppConfig()
         fileName, _ = QFileDialog.getSaveFileName(
             self, 'Save File', '', 'QT Translate (*.st)')
-        print(fileName)
+        # print(fileName)
         if fileName:
             self.app_path_file = fileName
             with open(fileName, 'w', encoding='utf-8') as f:
@@ -507,7 +561,7 @@ class MainWindow(FramelessMainWindow, Ui_MainWindow):
         now = datetime.now()
         dt_string = now.strftime("%d-%m-%Y-%H-%M-%S-%f")
         file_temp = os.path.join(userData_temp, f'{dt_string}.st')
-        print(file_temp)
+        # print(file_temp)
         with open(file_temp, 'w', encoding='utf-8') as f:
             json.dump(self.app_config, f)
 
@@ -620,7 +674,7 @@ class MainWindow(FramelessMainWindow, Ui_MainWindow):
     # add china dictionary
     def handleAddChinaDict(self, china_text, list_datas):
         result = ''''''
-        print(list_datas)
+        # print(list_datas)
         for data in list_datas:
             if not result:
                 result = result + f'''{china_text} \n'''
